@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+
+  <title>🌟 Gra terenowa 🌟</title>
+
+  <style>
+    body { 
+         max-width: 90%;
+         max-height: 90%;
+      font-family: Arial; 
+      text-align: center; 
+      margin: 03% auto; 
+      padding: 0%; 
+      transition: background-color 0.5s;
+    }
+    #game { 
+      max-width: 90%; 
+          margin-top: 50%;
+          margin-right: auto;
+          margin-bottom: 50%;
+          margin-left: auto;
+      padding: 10%; 
+      background: rgba(255,255,255,0.9); 
+      border-radius: 10%; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+  
+    input { 
+      padding: 10px; 
+      width: 80%; 
+      margin: 10px 0; 
+      font-size: 16px;
+      border-radius: 5px;
+      border: 2px solid #36291e;
+    }
+    button { 
+      padding: 10px 20px; 
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    button:hover { background-color: #45a049; }
+    #komunikat { font-size: 18px; margin-top: 10px; }
+    .etap-0 { background-color: #FFEBEE; }
+    .etap-1 { background-color: #E8F5E9; }
+    .etap-2 { background-color: #E3F2FD; }
+    .etap-3 { background-color: #FFF3E0; }
+    .etap-4 { background-color: #F3E5F5; }
+    .etap-5 { background-color: #FFFDE7; }
+    .etap-6 { background-color: rgba(186, 196, 211, 1)}
+    #grafika { font-size: 30px; margin: 20px 0; }
+
+    .multi-container {
+         display: flex;
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 8px;
+         margin: 03% auto;
+         text-align: center;
+         padding: 03%;
+      }
+      .multi-container label {
+         display: flex;
+         align-items: center;
+         font-size: 18px;
+         cursor: pointer;
+      }
+      .multi-container input[type=checkbox] {
+         margin-right: 10px;
+         transform: scale(1.3);
+         cursor: pointer;
+      }
+  </style>
+
+</head>
+
+
+
+<body  class="centered" class="etap-0">
+    
+  <div id="game" class="centered">
+    <h1>JESIENNE<br> PODCHODY 🎃</h1>
+    
+    <div id="grafika"></div>
+   
+    <p id="pytanie" style="font-size:18px;">
+      Ten kto pierwszy dotrze do mety, dostanie kosz cały wypchany <br>w maszkety.🍪🍬🍫
+      <br>
+      <br> <b>PYTANIE 1:
+        
+          <br>PODAJ ROZWIĄZANIE KRZYŻÓWKI</b> 
+    </p>
+    <input id="odp" placeholder="Twoja odpowiedź">
+    <br>
+    <button onclick="sprawdz()">Sprawdź</button>
+    <p id="komunikat"></p>
+  </div>
+
+
+
+  
+   <script>
+      const etapy = [
+         { pytanie: "", odpowiedz: "jesieniara", grafika: "", typ: "input" },
+         { pytanie: "<b>PODAJ ODPOWIEDŹ DO PYTANIA NR 2<b/>", odpowiedz: "polska złota jesień", grafika: '<a href="https://www.google.com/maps/dir//Obrońców+Westerplatte,+41-710+Ruda+Śląska/@50.2741746,18.7913854,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x4716cd9e97549fed:0x827921cd78957940!2m2!1d18.8737857!2d50.2742037?entry=ttu&g_ep=EgoyMDI1MDkyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank">Udaj się do miejsca pod linkiem, gdy będziesz na miejscu wróć do pytania!</a>', typ: "input" },//ladowarka
+         { pytanie: "<b>PODAJ ODPOWIEDŹ DO PYTANIA NR 3<b/>", odpowiedz: "11", grafika:'<a href="https://www.google.com/maps/dir//Polska/@50.2742602,18.8705059,900m/data=!3m1!1e3!4m8!4m7!1m0!1m5!1m1!1s0x4716cd3077debf93:0xae96b5cf85f2b1cc!2m2!1d18.8718382!2d50.2751141?entry=ttu&g_ep=EgoyMDI1MTAwMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">Udaj się do następnego miejsca, gdy już tam będziesz wróć do pytania!</a>', typ: "input" },//paczkomat
+         { pytanie: "<b>PODAJ ODPOWIEDŹ DO PYTANIA NR 4<b/>", odpowiedz: "wrzesień", grafika:'<a href="https://www.google.com/maps/dir//50.2770507,18.8639628/@50.2770507,18.8639628,28813m/data=!3m1!1e3!4m2!4m1!3e0?entry=ttu&g_ep=EgoyMDI1MTAwMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">Udaj się do miejsca pod linkiem, gdy będziesz na miejscu wróć do pytania!!</a>', typ: "input" },//plac zabaw
+         { pytanie: "<b>PODAJ ODPOWIEDŹ DO PYTANIA NR 5<b/>", odpowiedz: "kasztany", grafika: '<a href="https://www.google.com/maps/dir//50.2750058,18.8674364/@50.2750058,18.8674364,28814m/data=!3m1!1e3!4m2!4m1!3e0?entry=ttu&g_ep=EgoyMDI1MTAwMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">Udaj się do następnego miejsca, gdy już tam będziesz wróć do pytania!</a>', typ: "input" },//plaza skrzynka
+        { pytanie: "Zaznacz wszystkie słowa związane z JESIENIĄ 🍂", odpowiedz: ["liść","dynia","herbata","żołądź","szalik"], grafika: "", typ: "multi" },
+
+       //https://www.google.com/maps/dir//50.274991,18.8674031/@50.2747523,18.8671751,202m/data=!3m1!1e3!4m5!4m4!1m0!1m1!4e1!3e0?entry=ttu&g_ep=EgoyMDI1MTAwMS4wIKXMDSoASAFQAw%3D%3D  
+
+      ];
+
+      let index = 0;
+
+      function sprawdz() {
+         let etap = etapy[index];
+
+         if (etap.typ === "input") {
+            let input = document.getElementById("odp").value.toLowerCase().trim();
+            if (input === etap.odpowiedz.toLowerCase()) {
+               komunikat("✅ Dobrze!");
+               przejdzDalej();
+            } else {
+               komunikat("❌ Zła odpowiedź, spróbuj jeszcze raz!");
+            }
+         }
+
+         if (etap.typ === "multi") {
+            let zaznaczone = Array.from(document.querySelectorAll("input[type=checkbox]:checked")).map(el => el.value.toLowerCase());
+            let poprawne = etap.odpowiedz.map(x => x.toLowerCase());
+
+            if (zaznaczone.length === poprawne.length && zaznaczone.every(x => poprawne.includes(x))) {
+               komunikat("✅ Super, udało się!");
+               przejdzDalej();
+            } else {
+               komunikat("❌ Spróbuj jeszcze raz!");
+            }
+         }
+      }
+
+      function przejdzDalej() {
+         index++;
+         if (index < etapy.length) {
+            let etap = etapy[index];
+            document.getElementById("pytanie").innerHTML = etap.pytanie;
+            document.getElementById("grafika").innerHTML = etap.grafika;
+            document.body.className = `etap-${index}`;
+
+            if (etap.typ === "multi") {
+               let opcje = ["liść", "śnieg", "dynia", "banan", "herbata", "żołądź", "szalik", "lody"];
+               let html = `<div class="multi-container">` +
+                  opcje.map(o => `<label><input type="checkbox" value="${o}"> ${o}</label>`).join("") +
+                  `</div>`;
+               document.getElementById("grafika").innerHTML = html;
+               document.getElementById("odp").style.display = "none";
+            } else {
+               document.getElementById("odp").style.display = "inline-block";
+               document.getElementById("odp").value = "";
+            }
+         } else {
+            document.getElementById("pytanie").innerHTML = '<b><a href="https://www.google.com/maps/dir//50.2750058,18.8674364/@50.2750058,18.8674364,28814m/data=!3m1!1e3!4m2!4m1!3e0?entry=ttu&g_ep=EgoyMDI1MTAwMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">Tutaj!</a></b>';
+            document.getElementById("grafika").innerHTML = "Już niedaleko, szukaj skarbu"
+            document.getElementById("odp").style.display = "none";
+         }
+      }
+
+      function komunikat(msg) {
+         document.getElementById("komunikat").innerHTML = msg;
+         setTimeout(() => { document.getElementById("komunikat").innerHTML = ""; }, 3000);
+      }
+   </script>
+
+
+</body>
+</html>
+
+
+
